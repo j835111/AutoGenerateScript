@@ -9,7 +9,7 @@ namespace WindowsFormsApplication5
     public partial class Form3 : Form
     {
         string path;//紀錄excel路徑 
-        int test,column,max = 1000;
+        int test, column = 0, max = 1000;
         string[,] data;//excel量測
         string[,] comment;//量測目的
         int ChapterNunber, Catagory;//章節 測試種類
@@ -87,7 +87,7 @@ namespace WindowsFormsApplication5
         {
             try
             {
-                ChapterNunber = Int16.Parse(chap_choise.SelectedItem.ToString().TrimStart(chapter.ToCharArray()));
+                ChapterNunber = StringToInt(chap_choise.SelectedItem.ToString().TrimStart(chapter.ToCharArray()));
 
             }
             catch
@@ -100,6 +100,7 @@ namespace WindowsFormsApplication5
         {
             Application.Exit();
         }
+
         //選擇靜態或動態
         private void TestCatagory_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -227,7 +228,7 @@ namespace WindowsFormsApplication5
                     {
                         comment[i, 0] = dt1.Rows[i][2].ToString();//紀錄量測的量測點A (在EXCEL上為欄位C)
                         comment[i, 1] = dt1.Rows[i][3].ToString();//紀錄量測的量測點B (在EXCEL上為欄位D)
-                        comment[i, 2] = dt1.Rows[i][8].ToString();//紀錄量測目的 (在EXCEL上為欄位I)
+                        comment[i, 2] = dt1.Rows[i][10].ToString();//紀錄量測目的 (在EXCEL上為欄位K)
                                                                   //label2.Text += comment[i, 0] + "  " + comment[i, 1] + " " + comment[i, 2];
                                                                   //label2.Text += "\n";
                         testNumber = i;
@@ -287,7 +288,7 @@ namespace WindowsFormsApplication5
             }
 
         }
-        public int StringToInt(String s)
+        public static int StringToInt(String s)
         {   
             try
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace WindowsFormsApplication5
 {
@@ -67,9 +68,9 @@ namespace WindowsFormsApplication5
         private ComboBox[] ResistRange;
 
         //每個測試的編號顯示
-        private System.Windows.Forms.Label[] lab;
+        private Label[] lab;
         //每個欄位的顯示內容
-        private System.Windows.Forms.Label[] title;
+        private Label[] title;
 
         //constructor
         public Form2(int n, int c, String[,] ss, String[,] s)
@@ -84,7 +85,7 @@ namespace WindowsFormsApplication5
             {
                 //s[i,1]表示 EXCEL C欄位
                 //s[i,2]表示 EXCEL D欄位
-                ann[i] = s[i, 0] + "腳位與" + s[i, 1] + "腳位" + s[i, 2];
+                ann[i] = s[i, 2];
             }
 
             //從excel讀值
@@ -133,8 +134,8 @@ namespace WindowsFormsApplication5
                 case "B_S17":x = 7; break;
                 case "B_S18":x = 8; break;
                 case "B_S1920":x = 9; break;
-                case "B_22":x = 10; break;
-                case "B_2425":x = 11; break;
+                case "B_S22":x = 10; break;
+                case "B_S2425":x = 11; break;
                 default:
                     x = 0;
                     break;
@@ -214,12 +215,12 @@ namespace WindowsFormsApplication5
         public ComboBox addComboBox(int row, int col, int CommandNumber)
         {
             ComboBox x = new ComboBox();
-            x.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            x.DropDownStyle = ComboBoxStyle.DropDownList;
             x.FormattingEnabled = true;
-            x.Location = new System.Drawing.Point(50 + width * col, height * (row + 1) + CommandNumber * 50);
+            x.Location = new Point(50 + width * col, height * (row + 1) + CommandNumber * 50);
             x.Name = "comboBox1";
-            x.Size = new System.Drawing.Size(150, 50);
-            x.Font= new System.Drawing.Font("Microsoft JhengHei", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            x.Size = new Size(150, 50);
+            x.Font= new Font("Microsoft JhengHei", 12.25F, FontStyle.Bold, GraphicsUnit.Point, 136);
             x.TabIndex = 2;
             x.Visible = true;
             x.Enabled = false;
@@ -234,10 +235,10 @@ namespace WindowsFormsApplication5
         public TextBox addTextBox(int row, int col, int CommandNumber)
         {
             TextBox x = new TextBox();
-            x.Location = new System.Drawing.Point(50 + width * col, height * (row + 1) + CommandNumber * 50);
+            x.Location = new Point(50 + width * col, height * (row + 1) + CommandNumber * 50);
             x.Name = "comboBox1";
-            x.Font= new System.Drawing.Font("Microsoft JhengHei", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            x.Size = new System.Drawing.Size(120, 50);
+            x.Font= new Font("Microsoft JhengHei", 12.25F, FontStyle.Bold, GraphicsUnit.Point, 136);
+            x.Size = new Size(120, 50);
             x.TabIndex = 2;
             x.Enabled = false;
             x.Visible = true;
@@ -250,11 +251,11 @@ namespace WindowsFormsApplication5
             //欄位名稱
             for (int i = 0; i < 10; i++)
             {
-                this.title[i] = new System.Windows.Forms.Label();
+                this.title[i] = new Label();
                 this.title[i].AutoSize = true;
-                this.title[i].Location = new System.Drawing.Point(50 + width * i, 20);
+                this.title[i].Location = new Point(50 + width * i, 20);
 
-                this.title[i].Font = new System.Drawing.Font("Microsoft JhengHei", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+                this.title[i].Font = new Font("Microsoft JhengHei", 12.25F, FontStyle.Bold, GraphicsUnit.Point, 136);
                 this.title[i].Text = "";
                 this.Controls.Add(title[i]);
             }
@@ -262,10 +263,10 @@ namespace WindowsFormsApplication5
             {
                 /*----------------------------------------*/
                 //第0欄
-                this.lab[i] = new System.Windows.Forms.Label();
+                this.lab[i] = new Label();
                 this.lab[i].AutoSize = true;
-                this.lab[i].Location = new System.Drawing.Point(10, height * (i + 1));
-                this.lab[i].Font = new System.Drawing.Font("Microsoft JhengHei", 12.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+                this.lab[i].Location = new Point(10, height * (i + 1));
+                this.lab[i].Font = new Font("Microsoft JhengHei", 12.25F, FontStyle.Bold, GraphicsUnit.Point, 136);
                 if (i != 0)
                 {
                     this.lab[i].Text = "test" + (i) + "\n";
@@ -707,16 +708,15 @@ namespace WindowsFormsApplication5
             }
         }
         //避免整數轉換發生錯誤
-        public int StringToInt(String s)
+        public static int StringToInt(String s)
         {
             try
             {
-                int x=Int32.Parse(s);
-                return x;
+                return Int32.Parse(s);
             }
-            catch(Exception e)
+            catch (Exception)
             {
-                return - 1;
+                return 0;
             }
         }
         //建立新檔案 ，當create 的按鈕被點下時
@@ -800,6 +800,11 @@ namespace WindowsFormsApplication5
                 MessageBox.Show(warning);
             }
 
+        }
+
+        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
 
         private void Form2_Load(object sender, EventArgs e)

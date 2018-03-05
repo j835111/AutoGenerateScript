@@ -29,6 +29,12 @@ namespace WindowsFormsApplication5
         //存放輸出資料
         string[,] Final_OutputData;
         //Boolean[,] check;
+
+        string[] DmmMmodeName = {"DC Voltage","DC Voltage Ratio",
+                                 "AC Voltage","DC Current",
+                                 "AC Current","2 Wire Resistance",
+                                 "4 Wire Resistance","Continuity",
+                                 "Diode"};
         //動態
         public DynamicWriteCS(int chapter, int Testnumber, InputData[] inputData, string[,] each_InputNum, string[,] Final_OutputData)
         {
@@ -572,7 +578,7 @@ namespace WindowsFormsApplication5
             //1參數
             if (inputData[inputNumber].GetFunction.Equals("DMMhp34461A_meas") || Parameter[1] == null)
             {
-                WriteLine("//使用數位電錶量測 參數: " + Parameter[0]);
+                WriteLine("//使用數位電錶量測 參數: " + Parameter[0] + DmmMmodeName[StringToInt(Parameter[0])]);
                 WriteLine("UUT_MainFunction.g_objMeasure_Data = DMMhp34461A_meas(" + Parameter[0] + ");");
             }
             //二參數
@@ -610,6 +616,17 @@ namespace WindowsFormsApplication5
                 WriteLine("UUT_MainFunction.g_objMeasure_Data = LCR_meas(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + ");");
             }
             WriteLine("");
+        }
+        public static int StringToInt(String s)
+        {
+            try
+            {
+                return Int32.Parse(s);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }
