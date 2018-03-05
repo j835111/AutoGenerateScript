@@ -140,6 +140,8 @@ namespace WindowsFormsApplication5
         {
             this.test = test;
             //第test節的註解
+            //註解量測目的
+            WriteLine("//量測目的: " + Final_OutputData[test + 1, 9]);
             //名稱
             WriteLine("public static void test" + chapter.ToString() + "_" + (test + 1).ToString() + "()");
             WriteLine("{");
@@ -218,10 +220,7 @@ namespace WindowsFormsApplication5
             if (!Final_OutputData[test+1, 6].Equals("null"))
             {
                 Dynamic_WriteSwitch(Final_OutputData[test + 1, 6], test + 1, 2, 2, 1);//k=2 :開第二個switch(量測點B) 
-            }
-            
-            //註解量測目的
-            WriteLine("//量測目的: " + Final_OutputData[test + 1, 9]);
+            } 
 
             /*--------------------------- Measure --------------------------------*/
             //4.量測
@@ -336,14 +335,12 @@ namespace WindowsFormsApplication5
                 {
                     if(k == 1)
                     {
-                        WriteLine("//開啟DIFFRLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5]);
-                        WriteLine("//量測點A: " + Final_OutputData[inputnumber, 1]);
+                        WriteLine("//開啟DIFFRLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "  量測點A: " + Final_OutputData[inputnumber, 1]);
                         WriteLine("Switch.DIFFRLY_" + switchName + "(" + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "," + on_off + ");");
                     }
                     else if(k == 2)
                     {
-                        WriteLine("//開啟DIFFRLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 7] + "," + Final_OutputData[inputnumber, 8]);
-                        WriteLine("//量測點B: " + Final_OutputData[inputnumber, 2]);
+                        WriteLine("//開啟DIFFRLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 7] + "," + Final_OutputData[inputnumber, 8] + "  量測點B: " + Final_OutputData[inputnumber, 2]);
                         WriteLine("Switch.DIFFRLY_" + switchName + "(" + Final_OutputData[inputnumber, 7] + "," + Final_OutputData[inputnumber, 8] + "," + on_off + ");");
                     }
                     
@@ -383,15 +380,13 @@ namespace WindowsFormsApplication5
                 {
                     if(k == 1)
                     {
-                        WriteLine("//開啟FORMARLY_" + switchName + "的通道");
-                        WriteLine("//量測點A: " + Final_OutputData[inputnumber, 2]);
+                        WriteLine("//開啟FORMARLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 4] + "  量測點A: " + Final_OutputData[inputnumber, 2]);
                         WriteLine("Switch.FORMARLY_" + switchName + "(" + Final_OutputData[inputnumber, 4] + "," + on_off + ");");
                         WriteLine("");
                     }
                     else if(k == 2)
                     {
-                        WriteLine("//開啟FORMARLY_" + switchName + "的通道");
-                        WriteLine("//量測點B: " + Final_OutputData[inputnumber, 2]);
+                        WriteLine("//開啟FORMARLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 7] + "  量測點B: " + Final_OutputData[inputnumber, 2]);
                         WriteLine("Switch.FORMARLY_" + switchName + "(" + Final_OutputData[inputnumber, 7] + "," + on_off + ");");
                     }
                 }
@@ -578,7 +573,7 @@ namespace WindowsFormsApplication5
             //1參數
             if (inputData[inputNumber].GetFunction.Equals("DMMhp34461A_meas") || Parameter[1] == null)
             {
-                WriteLine("//使用數位電錶量測 參數: " + Parameter[0] + DmmMmodeName[StringToInt(Parameter[0])]);
+                WriteLine("//使用數位電錶量測 參數: " + Parameter[0] + " (" + DmmMmodeName[StringToInt(Parameter[0]) - 1] + ")");
                 WriteLine("UUT_MainFunction.g_objMeasure_Data = DMMhp34461A_meas(" + Parameter[0] + ");");
             }
             //二參數
