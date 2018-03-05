@@ -59,7 +59,7 @@
             this.chap_choise.Name = "chap_choise";
             this.chap_choise.Size = new System.Drawing.Size(208, 28);
             this.chap_choise.TabIndex = 2;
-            this.chap_choise.SelectedIndexChanged += new System.EventHandler(this.chap_choise_SelectedIndexChanged);
+            this.chap_choise.SelectedIndexChanged += new System.EventHandler(this.Chap_choise_SelectedIndexChanged);
             // 
             // button2
             // 

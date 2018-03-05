@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApplication5
@@ -266,7 +260,7 @@ namespace WindowsFormsApplication5
         public TextBox addTextBox(int row, int col, int CommandNumber, int initial)
         {
             TextBox x = new TextBox();
-            x.Location = new System.Drawing.Point(row, height * (col + 1) + CommandNumber * 40 + initial);
+            x.Location = new Point(row, height * (col + 1) + CommandNumber * 40 + initial);
             x.Font = new System.Drawing.Font("Microsoft JhengHei", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             x.Size = new System.Drawing.Size(90, 11);
             x.TabIndex = 2;

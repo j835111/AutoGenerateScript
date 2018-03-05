@@ -83,7 +83,7 @@ namespace WindowsFormsApplication5
         }
 
         //選擇章節
-        private void chap_choise_SelectedIndexChanged(object sender, EventArgs e)
+        private void Chap_choise_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -146,7 +146,7 @@ namespace WindowsFormsApplication5
                 conn.Open();
                 OleDbDataAdapter da = new OleDbDataAdapter("Select * from [" + name + "$]", conn);
                 da.Fill(ds1);
-                dt1 = ds1.Tables[0];
+                dt1 = ds1.Tables[0]; 
 
                 /*---------------------------------------------------------*/
 

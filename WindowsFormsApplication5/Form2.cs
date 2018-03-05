@@ -124,17 +124,17 @@ namespace WindowsFormsApplication5
             int x = 0;
             switch (s)
             {
-                case "A08": x = 1; break;
-                case "B0203": x = 2; break;
-                case "B0506": x = 3; break;
-                case "B0809":x = 4; break;
-                case "B13":x = 5; break;
-                case "B15":x = 6; break;
-                case "B17":x = 7; break;
-                case "B18":x = 8; break;
-                case "B1920":x = 9; break;
-                case "B22":x = 10; break;
-                case "B2425":x = 11; break;
+                case "A_S08": x = 1; break;
+                case "B_S0203": x = 2; break;
+                case "B_S0506": x = 3; break;
+                case "B_S0809":x = 4; break;
+                case "B_S13":x = 5; break;
+                case "B_S15":x = 6; break;
+                case "B_S17":x = 7; break;
+                case "B_S18":x = 8; break;
+                case "B_S1920":x = 9; break;
+                case "B_22":x = 10; break;
+                case "B_2425":x = 11; break;
                 default:
                     x = 0;
                     break;
@@ -152,8 +152,8 @@ namespace WindowsFormsApplication5
             this.ann = new String[MAX];
             this.result = new int[MAX, MAXcol, MaxOneTestNumber];
 
-            this.lab = new System.Windows.Forms.Label[MAX];
-            this.title = new System.Windows.Forms.Label[MAXcol];
+            this.lab = new Label[MAX];
+            this.title = new Label[MAXcol];
 
             this.TestType = new ComboBox[MAX];
             //Switch
@@ -293,14 +293,11 @@ namespace WindowsFormsApplication5
                 //新增位置到第i個測試節的第1欄位(測試類型)
                 this.TestType[i] = addComboBox(i, 1, 0);
                 //新增的選擇項目
-                this.TestType[i].Items.AddRange(new object[] {
-                "未指定",
-                "靜態阻值測試",
-                "電壓測試"});
+                this.TestType[i].Items.AddRange(new object[] { "未指定", "靜態阻值測試" });
                 //初始預設為未指定
                 this.TestType[i].SelectedIndex = 0;
                 //當選擇項目改變時呼叫的function
-                this.TestType[i].SelectedIndexChanged += new System.EventHandler(this.TestType_SelectedIndexChanged);
+                this.TestType[i].SelectedIndexChanged += new EventHandler(this.TestType_SelectedIndexChanged);
 
                 /*----------------------------------------*/
                 //第二欄 輸入範圍(如果選擇靜態阻抗的話)
@@ -322,7 +319,7 @@ namespace WindowsFormsApplication5
                 //當使用者使用一鍵輸入時
                 //所呼叫的function
                 if (i == 0)
-                    this.ResistRange[i].SelectedIndexChanged += new System.EventHandler(this.ResistRange_SelectedIndexChanged);
+                    this.ResistRange[i].SelectedIndexChanged += new EventHandler(this.ResistRange_SelectedIndexChanged);
                
                 /*----------------------------------------*/
                 //第三欄
@@ -337,7 +334,7 @@ namespace WindowsFormsApplication5
                     this.SwitchUseNumber[i].Items.Add(j.ToString());
 
                 this.SwitchUseNumber[i].SelectedIndex = 0;
-                this.SwitchUseNumber[i].SelectedIndexChanged += new System.EventHandler(this.SwitchNumber_SelectedIndexChanged);
+                this.SwitchUseNumber[i].SelectedIndexChanged += new EventHandler(this.SwitchNumber_SelectedIndexChanged);
 
                 /*----------------------------------------*/
                 //第四欄
@@ -365,7 +362,7 @@ namespace WindowsFormsApplication5
                     //初始選擇為0也就是未指定
                     this.SwitchList[i, j].SelectedIndex = 0;
                     //添加當控制項被改變時要執行的function
-                    this.SwitchList[i, j].SelectedIndexChanged += new System.EventHandler(this.switch_SelectedIndexChanged);
+                    this.SwitchList[i, j].SelectedIndexChanged += new EventHandler(this.switch_SelectedIndexChanged);
 
                 }
 
