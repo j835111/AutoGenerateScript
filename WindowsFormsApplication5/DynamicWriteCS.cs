@@ -415,16 +415,16 @@ namespace WindowsFormsApplication5
             switch (inputData[inputNumber].GetFunction)
             {
                 case "AC_Source_CPS6000_init":
-                    showWrong(inputNumber, "AC_Source_CPS6000_init");
+                    showWrong(inputNumber, "AC_Source.AC_Source_CPS6000_init");
                     break;
                 case "ShutDown":
-                    showWrong(inputNumber, "ShutDown");
+                    showWrong(inputNumber, "AC_Source.ShutDown");
                     break;
                 case "AC_Source_CPS6000_OFF":
-                    showWrong(inputNumber, "AC_Source_CPS6000_OFF");
+                    showWrong(inputNumber, "AC_Source.AC_Source_CPS6000_OFF");
                     break;
                 case "AC_Source_CPS6000_P5VAC_OFF":
-                    showWrong(inputNumber, "AC_Source_CPS6000_P5VAC_OFF");
+                    showWrong(inputNumber, "AC_Source.AC_Source_CPS6000_P5VAC_OFF");
                     break;
             }
             //打開AC_Source 送三相電
@@ -434,17 +434,17 @@ namespace WindowsFormsApplication5
                 {
                     //三個參數
                     WriteLine("//打開AC_Source 送三相電,參數: " + Parameter[0] + "," + Parameter[1] + "," + Parameter[2]);
-                    WriteLine("AC_Source_CPS6000_ON(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + ");");
+                    WriteLine("AC_Source.AC_Source_CPS6000_ON(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + ");");
                 }
                 else if (inputData[inputNumber].GetFunction.Equals("AC_Source_CPS6000_P5VAC_ON"))
                 {
                     WriteLine("//打開AC_Source 送5v三相電");
-                    WriteLine("AC_Source_CPS6000_P5VAC_ON();");
+                    WriteLine("AC_Source.AC_Source_CPS6000_P5VAC_ON();");
                 }
                 else if (inputData[inputNumber].GetFunction.Equals("AC_Source_CPS6000_P115VAC_ON"))
                 {
                     WriteLine("//打開AC_Source 送115v三相電");
-                    WriteLine("AC_Source_CPS6000_P115VAC_ON();");
+                    WriteLine("AC_Source.AC_Source_CPS6000_P115VAC_ON();");
                 }
                 WriteLine("");
             }
@@ -454,15 +454,15 @@ namespace WindowsFormsApplication5
                 WriteLine("//關閉AC_Source");
                 if (inputData[inputNumber].GetFunction.Equals("AC_Source_CPS6000_ON"))
                 {
-                    WriteLine("AC_Source_CPS6000_OFF();");
+                    WriteLine("AC_Source.AC_Source_CPS6000_OFF();");
                 }
                 else if (inputData[inputNumber].GetFunction.Equals("AC_Source_CPS6000_P5VAC_ON"))
                 {
-                    WriteLine("AC_Source_CPS6000_P5VAC_OFF();");
+                    WriteLine("AC_Source.AC_Source_CPS6000_P5VAC_OFF();");
                 }
                 else if (inputData[inputNumber].GetFunction.Equals("AC_Source_CPS6000_P115VAC_ON"))
                 {
-                    WriteLine("AC_Source_CPS6000_OFF();");
+                    WriteLine("AC_Source.AC_Source_CPS6000_OFF();");
                 }
                 WriteLine("");
             }
@@ -480,7 +480,7 @@ namespace WindowsFormsApplication5
             switch (inputData[inputNumber].GetFunction)
             {
                 case "AWG_init":
-                    showWrong(inputNumber, "AWG_init");
+                    showWrong(inputNumber, "AWG.AWG_init");
                     break;
             }
             if (on_off == 1)
@@ -489,31 +489,31 @@ namespace WindowsFormsApplication5
                 {
                     //五個參數
                     WriteLine("//sin波型產生器 五個參數");
-                    WriteLine("AWG_SinWave(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + "," + Parameter[3] + "," + Parameter[4] + ");");
+                    WriteLine("AWG.AWG_SinWave(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + "," + Parameter[3] + "," + Parameter[4] + ");");
                 }
                 else if (inputData[inputNumber].Equals("AWG_SquareWave"))
                 {
                     //六個參數
                     WriteLine("//方波波型產生器 六個參數");
-                    WriteLine("AWG_SquareWave(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + "," + Parameter[3] + "," + Parameter[4] + "," + Parameter[5] + ");");
+                    WriteLine("AWG.AWG_SquareWave(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + "," + Parameter[3] + "," + Parameter[4] + "," + Parameter[5] + ");");
                 }
                 else if (inputData[inputNumber].Equals("AWG_Pulse"))
                 {
                     //8個參數
                     WriteLine("//AWG_Pulse波型產生器 8個參數");
-                    WriteLine("AWG_Pulse(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + "," + Parameter[3] + "," + Parameter[4] + "," + Parameter[5] + "," + Parameter[6] + "," + Parameter[7] + ");");
+                    WriteLine("AWG.AWG_Pulse(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + "," + Parameter[3] + "," + Parameter[4] + "," + Parameter[5] + "," + Parameter[6] + "," + Parameter[7] + ");");
                 }
                 //2個參數
                 else if (inputData[inputNumber].Equals("AWG_DCoffset"))
                 {
                     WriteLine("//");
-                    WriteLine("AWG_DCoffset(" + Parameter[0] + "," + Parameter[1] + ");");
+                    WriteLine("AWG.AWG_DCoffset(" + Parameter[0] + "," + Parameter[1] + ");");
                 }
             }
             else if (on_off == 0)
             {
                 WriteLine("//關閉波型產生器");
-                WriteLine("AWG_Close();");
+                WriteLine("AWG.AWG_Close();");
             }
         }
         //直流電
@@ -525,27 +525,27 @@ namespace WindowsFormsApplication5
             {
                 //N6744B 直流電源模組
                 case "N67xx_1_init":
-                    showWrong(inputNumber, "N67xx_1_init");
+                    showWrong(inputNumber, "DCV.N67xx_1_init");
                     break;
                 case "N67xx_2_init":
-                    showWrong(inputNumber, "N67xx_2_init");
+                    showWrong(inputNumber, "DCV.N67xx_2_init");
                     break;
                 //N5771A 電源供應器
                 case "N57xx_init":
-                    showWrong(inputNumber, "N57xx_init");
+                    showWrong(inputNumber, "DCV.N57xx_init");
                     break;
             }
             if (on_off == 1 && inputData[inputNumber].GetFunction.Equals("DCV_ON"))
             {
                 //3參數
                 WriteLine("//送直流電 參數:" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2]);
-                WriteLine("DCV_ON(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + ");");
+                WriteLine("DCV.DCV_ON(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + ");");
             }
             else if (on_off == 0)
             {
                 //1參數
                 WriteLine("//停止送直流電 參數:" + Parameter[0]);
-                WriteLine("DCV_OFF(" + Parameter[0] + ");");
+                WriteLine("DCV.DCV_OFF(" + Parameter[0] + ");");
             }
             WriteLine("");
         }
@@ -558,14 +558,14 @@ namespace WindowsFormsApplication5
             {
                 // function不應被excel呼叫
                 case "DMMhp34461A_init":
-                    showWrong(inputNumber, "DMMhp34461A_init");
+                    showWrong(inputNumber, "DMM.DMMhp34461A_init");
                     break;
                 case "DMMhp34461A_Meas_ID_Res":
-                    showWrong(inputNumber, "DMMhp34461A_Meas_ID_Res");
+                    showWrong(inputNumber, "DMM.DMMhp34461A_Meas_ID_Res");
                     break;
                 //重設
                 case "DMMhp34461A_Reset":
-                    showWrong(inputNumber, "DMMhp34461A_Reset");
+                    showWrong(inputNumber, "DMM.DMMhp34461A_Reset");
                     break;
             }
 
@@ -574,13 +574,13 @@ namespace WindowsFormsApplication5
             if (inputData[inputNumber].GetFunction.Equals("DMMhp34461A_meas") || Parameter[1] == null)
             {
                 WriteLine("//使用數位電錶量測 參數: " + Parameter[0] + " (" + DmmMmodeName[StringToInt(Parameter[0]) - 1] + ")");
-                WriteLine("UUT_MainFunction.g_objMeasure_Data = DMMhp34461A_meas(" + Parameter[0] + ");");
+                WriteLine("UUT_MainFunction.g_objMeasure_Data = DMM.DMMhp34461A_meas(" + Parameter[0] + ");");
             }
             //二參數
             else if (inputData[inputNumber].GetFunction.Equals("DMMhp34461A_meas") || Parameter[2] != null)
             {
                 WriteLine("//使用數位電錶量測 參數: " + Parameter[0] + "," + Parameter[1]);
-                WriteLine("UUT_MainFunction.g_objMeasure_Data = DMMhp34461A_meas(" + Parameter[0] + "," + Parameter[1] + ");");
+                WriteLine("UUT_MainFunction.g_objMeasure_Data = DMM.DMMhp34461A_meas(" + Parameter[0] + "," + Parameter[1] + ");");
             }
             WriteLine("");
 
@@ -602,13 +602,13 @@ namespace WindowsFormsApplication5
             if (inputData[inputNumber].GetFunction.Equals("LCR_meas") || Parameter[2] == null)
             {
                 WriteLine("//使用精密型LCR錶量測 參數: " + Parameter[0] + "," + Parameter[1]);
-                WriteLine("UUT_MainFunction.g_objMeasure_Data = LCR_meas(" + Parameter[0] + "," + Parameter[1] + ");");
+                WriteLine("UUT_MainFunction.g_objMeasure_Data = LCR.LCR_meas(" + Parameter[0] + "," + Parameter[1] + ");");
             }
             else if (inputData[inputNumber].GetFunction.Equals("LCR_meas") || Parameter[2] != null)
             {
                 //3參數
                 WriteLine("//使用精密型LCR錶量測 參數: " + Parameter[0] + "," + Parameter[1] + Parameter[2]);
-                WriteLine("UUT_MainFunction.g_objMeasure_Data = LCR_meas(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + ");");
+                WriteLine("UUT_MainFunction.g_objMeasure_Data = LCR.LCR_meas(" + Parameter[0] + "," + Parameter[1] + "," + Parameter[2] + ");");
             }
             WriteLine("");
         }
