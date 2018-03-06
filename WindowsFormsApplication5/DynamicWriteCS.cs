@@ -169,7 +169,7 @@ namespace WindowsFormsApplication5
             {
                 //打開
                 //輸入編號 
-                int inputNumber = Int32.Parse(each_InputNum[test, i]) - 1;//因為輸入編號從0開始存，所以要減1
+                int inputNumber = StringToInt(each_InputNum[test, i]) - 1;//因為輸入編號從0開始存，所以要減1
                 //單個輸入開的多個switch
                 //1.先開啟要送電的switch和通道
                 for (int k = 0; !string.IsNullOrEmpty(inputData[inputNumber].GetRelay[k]); k++)//s[0]--s[1]---
@@ -227,7 +227,7 @@ namespace WindowsFormsApplication5
             for (int i = 0; each_InputNum[test, i] != null; i++)
             {
                 //輸入編號 
-                int inputNumber = Int32.Parse(each_InputNum[test, i]) - 1;//因為輸入編號從0開始存，所以要減1
+                int inputNumber = StringToInt(each_InputNum[test, i]) - 1;//因為輸入編號從0開始存，所以要減1
                 switch (inputData[inputNumber].GetInstrument)
                 {
                     case "DMM":
@@ -254,7 +254,7 @@ namespace WindowsFormsApplication5
             for (int i = 0; each_InputNum[test, i] != null; i++)
             {
                 //輸入編號 
-                int inputNumber = Int32.Parse(each_InputNum[test, i]) - 1;//因為輸入編號從0開始存，所以要減1
+                int inputNumber = StringToInt(each_InputNum[test, i]) - 1;//因為輸入編號從0開始存，所以要減1
                 //單個輸入開的多個switch
                 string[] s = new string[MAX];
                 s = inputData[inputNumber].GetRelay;
