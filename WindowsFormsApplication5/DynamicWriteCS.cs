@@ -321,13 +321,13 @@ namespace WindowsFormsApplication5
                 //送電用
                 if (on_off == 1 && order == 1)//開
                 {
-                    WriteLine("//開啟DIFFRLY_" + switchName + "的通道 " + inputData[inputnumber].GetCom1[k] + "," + inputData[inputnumber].GetCom2[k] + "腳位: " + inputData[inputnumber].GetPin_name[k]);
+                    WriteLine("//開啟DIFFRLY_" + switchName + "的通道" + inputData[inputnumber].GetCom1[k] + "," + inputData[inputnumber].GetCom2[k] + "腳位: " + inputData[inputnumber].GetPin_name[k]);
                     WriteLine("Switch.DIFFRLY_" + switchName + "(" + inputData[inputnumber].GetCom1[k] + "," + inputData[inputnumber].GetCom2[k] + "," + on_off + ");");
                 }
                 //送電用
                 else if (on_off == 0 && order == 1)//關
                 {
-                    WriteLine("//關閉DIFFRLY_" + switchName + "的通道 " + inputData[inputnumber].GetCom1[k] + "," + inputData[inputnumber].GetCom2[k] + "腳位: " + inputData[inputnumber].GetPin_name[k]);
+                    WriteLine("//關閉DIFFRLY_" + switchName + "的通道" + inputData[inputnumber].GetCom1[k] + "," + inputData[inputnumber].GetCom2[k] + "腳位: " + inputData[inputnumber].GetPin_name[k]);
                     WriteLine("Switch.DIFFRLY_" + switchName + "(" + inputData[inputnumber].GetCom1[k] + "," + inputData[inputnumber].GetCom2[k] + "," + on_off + ");");
                 }
                 //測試用
@@ -335,12 +335,12 @@ namespace WindowsFormsApplication5
                 {
                     if(k == 1)
                     {
-                        WriteLine("//開啟DIFFRLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "  量測點A: " + Final_OutputData[inputnumber, 1]);
+                        WriteLine("//開啟DIFFRLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "  量測點A: " + Final_OutputData[inputnumber, 1]);
                         WriteLine("Switch.DIFFRLY_" + switchName + "(" + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "," + on_off + ");");
                     }
                     else if(k == 2)
                     {
-                        WriteLine("//開啟DIFFRLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 7] + "," + Final_OutputData[inputnumber, 8] + "  量測點B: " + Final_OutputData[inputnumber, 2]);
+                        WriteLine("//開啟DIFFRLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 7] + "," + Final_OutputData[inputnumber, 8] + "  量測點B: " + Final_OutputData[inputnumber, 2]);
                         WriteLine("Switch.DIFFRLY_" + switchName + "(" + Final_OutputData[inputnumber, 7] + "," + Final_OutputData[inputnumber, 8] + "," + on_off + ");");
                     }
                     
@@ -350,12 +350,12 @@ namespace WindowsFormsApplication5
                 {
                     if(k == 1)
                     {
-                        WriteLine("//關閉DIFFRLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "  量測點A: " + Final_OutputData[inputnumber, 1]);
+                        WriteLine("//關閉DIFFRLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "  量測點A: " + Final_OutputData[inputnumber, 1]);
                         WriteLine("Switch.DIFFRLY_" + switchName + "(" + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "," + on_off + ");");
                     }
                     else if(k == 2)
                     {
-                        WriteLine("//關閉DIFFRLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "  量測點B: " + Final_OutputData[inputnumber, 2]);
+                        WriteLine("//關閉DIFFRLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "  量測點B: " + Final_OutputData[inputnumber, 2]);
                         WriteLine("Switch.DIFFRLY_" + switchName + "(" + Final_OutputData[inputnumber, 4] + "," + Final_OutputData[inputnumber, 5] + "," + on_off + ");");
                     }
                 }
@@ -366,13 +366,13 @@ namespace WindowsFormsApplication5
                 //送電用
                 if (on_off == 1 && order == 1)//開啟 
                 {
-                    WriteLine("//開啟FORMARLY_" + switchName + "的通道 " + inputData[inputnumber].GetCom1[k] + "腳位: " + inputData[inputnumber].GetPin_name[k]);
+                    WriteLine("//開啟FORMARLY_" + switchName + "的通道" + inputData[inputnumber].GetCom1[k] + "腳位: " + inputData[inputnumber].GetPin_name[k]);
                     WriteLine("Switch.FORMARLY_" + switchName + "(" + inputData[inputnumber].GetCom1[k] + "," + on_off + ");");
                 }
                 //送電用
                 else if (on_off == 0 && order == 1)//關閉
                 {
-                    WriteLine("//關閉FORMARLY_" + switchName + "的通道 " + inputData[inputnumber].GetCom1[k] + "腳位: " + inputData[inputnumber].GetPin_name[k]);
+                    WriteLine("//關閉FORMARLY_" + switchName + "的通道" + inputData[inputnumber].GetCom1[k] + "腳位: " + inputData[inputnumber].GetPin_name[k]);
                     WriteLine("Switch.FORMARLY_" + switchName + "(" + inputData[inputnumber].GetCom1[k] + "," + on_off + ");");
                 }
                 //測試用
@@ -394,12 +394,12 @@ namespace WindowsFormsApplication5
                 {
                     if(k == 1)
                     {
-                        WriteLine("//關閉FORMARLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 4] + "  量測點A: " + Final_OutputData[inputnumber, 1]);
+                        WriteLine("//關閉FORMARLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 4] + "  量測點A: " + Final_OutputData[inputnumber, 1]);
                         WriteLine("Switch.FORMARLY_" + switchName + "(" + Final_OutputData[inputnumber, 4] + "," + on_off + ");");
                     }
                    else if(k == 2)
                     {
-                        WriteLine("//關閉FORMARLY_" + switchName + "的通道 " + Final_OutputData[inputnumber, 7] + "  量測點B:  " + Final_OutputData[inputnumber, 2]);
+                        WriteLine("//關閉FORMARLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 7] + "  量測點B:  " + Final_OutputData[inputnumber, 2]);
                         WriteLine("Switch.FORMARLY_" + switchName + "(" + Final_OutputData[inputnumber, 7] + "," + on_off + ");");
                     }
                 }
