@@ -300,7 +300,7 @@ namespace WindowsFormsApplication5
                 else if(result[test, 4, k] >= 8) //FORMCRLY時
                     WriteCommand(test, k, 4, 0);
                 else                             //其他時channel
-                    WriteCommand(test, k, 2, 1);
+                    WriteCommand(test, k, 2, 0);
             }
 
             /*---------------------------------------------------------*/
