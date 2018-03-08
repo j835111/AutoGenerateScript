@@ -31,6 +31,8 @@ namespace WindowsFormsApplication5
         int testNumber;
         //紀錄此次要寫的章節
         int chapter;
+        //紀錄量測點A和B
+        string[,] Pin_name;
         int[,,] result;
         String[] line;
         /*------------------------------*/
@@ -38,8 +40,16 @@ namespace WindowsFormsApplication5
         InputData[] inputData;
         string[,] each_InputNum;
         string[,] Final_OutputData;
-        //Constructor
-        public AutoWriteCS(int n,int c,String[] a,int[,,] x)
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="n">testNumber</param>
+        /// <param name="c">chapter</param>
+        /// <param name="a">測試內容</param>
+        /// <param name="x">結果</param>
+        /// <param name="pin_name">量測點A，B</param>
+        public AutoWriteCS(int n,int c,String[] a,int[,,] x,string[,] pin_name)
         {
             //初始化
             init();
@@ -47,12 +57,25 @@ namespace WindowsFormsApplication5
             chapter = c;
             //紀錄註解
             for (int i = 0; i < testNumber; i++)
+            {
                 ann[i] = a[i];
+                Pin_name[i, 0] = pin_name[i, 0]; //A點
+                Pin_name[i, 1] = pin_name[i, 1]; //B點
+            }
+
             //紀錄result
             result = x;
             makeFile();
         }
-        //動態
+        
+        /// <summary>
+        /// 動態
+        /// </summary>
+        /// <param name="chapter"></param>
+        /// <param name="Testnumber"></param>
+        /// <param name="inputData"></param>
+        /// <param name="each_InputNum"></param>
+        /// <param name="Final_OutputData"></param>
         public AutoWriteCS(int chapter,int Testnumber,InputData[] inputData,string[,] each_InputNum,string[,] Final_OutputData)
         {
             this.testNumber = Testnumber;
@@ -70,6 +93,7 @@ namespace WindowsFormsApplication5
         {
             result = new Int32[MAXline, 10, 5];
             ann = new String[MAXline];
+            Pin_name = new String[MAX, MAX];
             line = new String[MAXline];
             lineNumber = 1;
             spaceNumber = 0;
@@ -79,7 +103,7 @@ namespace WindowsFormsApplication5
         //用來寫入每一行的程式碼，包含排版
         public void WriteLine(String text)
         {
-            if(lineNumber==MAXline)
+            if(lineNumber == MAXline)
             {
                 MessageBox.Show("超過最大行數!!!");
                 return;
@@ -96,23 +120,33 @@ namespace WindowsFormsApplication5
             //填入實際的內容
             line[lineNumber++] += text;
             //排版用
-            if (text != ""&&String.Compare(text, "{") == 0)
+            if (text != ""&& String.Compare(text, "{") == 0)
                 spaceNumber++;
         }
-        /*
+        
+        /// <summary>
+        /// 寫入switch和量測指令及註解
+        /// </summary>
+        /// <param name="test">第幾個測試項目</param>
+        /// <param name="number">在switch上為測項的第幾個通道連接</param>
+        /// <param name="mode">模式設定</param>
+        /// <param name="on_off">表示開或關</param>
+        public void WriteCommand(int test, int number ,int mode, int on_off)
+        {
+            /*
               mode
               1 時表示 Measure的指令
               2 時表示 Switch.FORMARLY開啟的指令
               3 時表示 Switch.Diffrly開啟的指令
-              4 時表示 DCV
-              5 時表示 AC
+              4 時表示 Switch.FORMCRLY開啟的指令
+              5 時表示 DCV
+              6 時表示 AC
               test 表示第幾個測試項目
               onoff 表示開或關
-              number 在switch上表示第test項目的第幾個通道連接
-                     在測量上表示是哪個模式的測量方式
+              number * 在switch上表示第test項目的第幾個通道連接
+                     * 在測量上表示是哪個模式的測量方式
             */
-        public void WriteCommand(int test, int number ,int mode, int on_off)
-        { 
+
             //寫入mode類型的指令
             switch (mode)
             {
@@ -133,28 +167,51 @@ namespace WindowsFormsApplication5
                 
                 /*---------------------------------------------------------*/
                 case 2://表示 Switch.FORMARLY開關的指令
-                        
-                        //Switch連接註解
-                        if(on_off==1)//開啟 
-                            WriteLine("//開啟Switch" + SwitchName[result[test, 4, number]]+"的通道"+ result[test, 5, number]);
-                        else//關閉
-                            WriteLine("//關閉Switch" + SwitchName[result[test, 4, number]] + "的通道" + result[test, 5, number]);
 
-                        //寫入Switch.FORMARLY程式碼
-                        WriteLine("Switch.FORMARLY_" + SwitchName[result[test, 4, number]] + "(" + result[test, 5, number] + "," + on_off + ");");
+                    //Switch連接註解
+                    if (on_off == 1)//開啟 
+                        WriteLine("//開啟Switch" + SwitchName[result[test, 4, number]] + "的通道" + result[test, 5, number] + ", " + Pin_name[test, number]);
+                    else//關閉
+                        WriteLine("//關閉Switch" + SwitchName[result[test, 4, number]] + "的通道" + result[test, 5, number] + ", " + Pin_name[test, number]);
+
+                    //寫入Switch.FORMARLY程式碼
+                    WriteLine("Switch.FORMARLY_" + SwitchName[result[test, 4, number]] + "(" + result[test, 5, number] + "," + on_off + ");");
                         break;
 
                 /*---------------------------------------------------------*/
-                case 3://Switch.Diffrly開關的指令
-                        WriteLine("Switch.DIFFRLY_" + SwitchName[result[test, 4, number]] + "(" + result[test, 5, number] + "," + result[test, 6, number] + "," + on_off + ");");
+                case 3: //Switch.Diffrly開關的指令
+
+                        //Switch連接註解
+                    if (on_off == 1)//開啟 
+                        WriteLine("//開啟Switch" + SwitchName[result[test, 4, number]] + "的通道" + result[test, 5, number] + "," + result[test, 6, number] + ", " + Pin_name[test, number]);
+                    else//關閉
+                        WriteLine("//關閉Switch" + SwitchName[result[test, 4, number]] + "的通道" + result[test, 5, number] + "," + result[test, 6, number] + ", " + Pin_name[test, number]);
+                    
+                    //寫入Switch.DIFFRLY程式碼
+                    WriteLine("Switch.DIFFRLY_" + SwitchName[result[test, 4, number]] + "(" + result[test, 5, number] + "," + result[test, 6, number] + "," + on_off + ");");
                         break;
-                case 4:
+
+                /*---------------------------------------------------------*/
+                case 4: //Switch.FORMCRLY開關的指令
+
+                    //Switch連接註解
+                    if(on_off == 1)//開啟 
+                        WriteLine("//開啟Switch" + SwitchName[result[test, 4, number]] + "的通道" + result[test, 5, number] + ", " + Pin_name[test, number]);
+                    else//關閉
+                        WriteLine("//關閉Switch" + SwitchName[result[test, 4, number]] + "的通道" + result[test, 5, number] + ", " + Pin_name[test, number]);
+
+                    //寫入Switch.DIFFRLY程式碼
+                    WriteLine("Switch.FORMCRLY_" + SwitchName[result[test, 4, number]] + "(" + result[test, 5, number] + "," + result[test, 6, number] + "," + on_off + ");");
+                    break;
+
+                /*---------------------------------------------------------*/
+                case 5:
                         //if (on_off == 1)
                             //WriteLine("DCV.DCV_ON(" + dataTable.Rows[i][2] + "," + dataTable.Rows[i][3] + "," + dataTable.Rows[i][4] + ");");
                         //else
                             //WriteLine("DCV.DCV_OFF(" + dataTable.Rows[i][2] + ");");
                         break;
-                case 5:
+                case 6:
                         //if (on_off == 1)
                             //WriteLine("AC_Source.AC_Source_CPS6000_ON(" + dataTable.Rows[i][2] + "," + dataTable.Rows[i][3] + "," + dataTable.Rows[i][4] + ");");
                         //else
@@ -205,16 +262,15 @@ namespace WindowsFormsApplication5
             WriteLine("");
             /*---------------------------------------------------------*/
             //確認是否有要Switch開啟的指令並寫入
-            for (int k = 0; k < result[test, 3, 0]; k++)//result[test, 3, 0]為連接的Switch數量
+            for (int k = 0; k < result[test, 3, 0]; k++) //result[test, 3, 0]為連接的Switch數量
             {
                 //連接哪個Switch 欄位4為switch選擇
-                if (result[test, 4, k] >= 5 && result[test, 4, k] <= 8)
-                {
-                    //矩陣轉換器時
-                    WriteCommand(test,k, 3, 1);//mode=3 ,on_off=1 ,k表示通道數
-                }
-                else //其他時channel
-                    WriteCommand(test,k,2, 1);//mode=2 ,on_off=1,k表示通道數
+                if (result[test, 4, k] >= 5 && result[test, 4, k] < 8)  //矩陣轉換器時  
+                    WriteCommand(test, k, 3, 1);                        //mode=3 ,on_off=1 ,k表示通道數
+                else if(result[test, 4, k] >= 8)                        //FORMCRLY時
+                    WriteCommand(test, k, 4, 1);                        //mode=4 ,on_off=1 ,k表示通道數
+                else                                                    //其他channel時
+                    WriteCommand(test, k, 2, 1);                        //mode=2 ,on_off=1 ,k表示通道數
             }
 
             /*---------------------------------------------------------*/
@@ -239,13 +295,12 @@ namespace WindowsFormsApplication5
             for (int k = 0; k < result[test, 3, 0]; k++)//連接數量
             {
                 //連接哪個Switch
-                if (result[test, 4, k] >= 5 && result[test, 4, k] <= 8)
-                {
-                    //矩陣轉換器時
+                if (result[test, 4, k] >= 5 && result[test, 4, k] <= 8) //矩陣轉換器時
                     WriteCommand(test, k, 3, 0);
-                }
-                else //其他時channel
-                    WriteCommand(test, k, 2, 0);
+                else if(result[test, 4, k] >= 8) //FORMCRLY時
+                    WriteCommand(test, k, 4, 0);
+                else                             //其他時channel
+                    WriteCommand(test, k, 2, 1);
             }
 
             /*---------------------------------------------------------*/
@@ -254,6 +309,7 @@ namespace WindowsFormsApplication5
             WriteLine("UutModule.pre_reset();");
             WriteLine("UutModule.post_reset();");
             WriteLine("}");
+            WriteLine("");
 
         }
         //填一個檔案的初始架構程式碼

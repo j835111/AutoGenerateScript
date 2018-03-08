@@ -43,8 +43,10 @@ namespace WindowsFormsApplication5
         //目前的章節
         int chapter;
 
+        //紀錄量測點A和B
+        string[,] pin_name;
         //紀錄每個測試的測試內容
-        String[] ann;
+        string[] ann;
 
         //結果
         int[,,] result;
@@ -83,9 +85,14 @@ namespace WindowsFormsApplication5
             //給予註解
             for (int i = 0; i <= Testnumber; i++)
             {
-                //s[i,1]表示 EXCEL C欄位
-                //s[i,2]表示 EXCEL D欄位
+                //s[i,2]表示 EXCEL K欄位
+                //ann[i, 1] = s[i, 1];
+                //ann[i, 2] = s[i, 2];
                 ann[i] = s[i, 2];
+                //s[i,0]表示 EXCEL C欄位
+                //s[i,1]表示 EXCEL D欄位
+                pin_name[i, 0] = s[i, 0];
+                pin_name[i, 1] = s[i, 1];
             }
 
             //從excel讀值
@@ -151,6 +158,7 @@ namespace WindowsFormsApplication5
             chapter = c;
 
             this.ann = new String[MAX];
+            pin_name = new String[MAX, MAX];
             this.result = new int[MAX, MAXcol, MaxOneTestNumber];
 
             this.lab = new Label[MAX];
@@ -214,16 +222,18 @@ namespace WindowsFormsApplication5
         //commandNumber表示目前是row測試節的第幾個
         public ComboBox addComboBox(int row, int col, int CommandNumber)
         {
-            ComboBox x = new ComboBox();
-            x.DropDownStyle = ComboBoxStyle.DropDownList;
-            x.FormattingEnabled = true;
-            x.Location = new Point(50 + width * col, height * (row + 1) + CommandNumber * 50);
-            x.Name = "comboBox1";
-            x.Size = new Size(150, 50);
-            x.Font= new Font("Microsoft JhengHei", 12.25F, FontStyle.Bold, GraphicsUnit.Point, 136);
-            x.TabIndex = 2;
-            x.Visible = true;
-            x.Enabled = false;
+            ComboBox x = new ComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                FormattingEnabled = true,
+                Location = new Point(50 + width * col, height * (row + 1) + CommandNumber * 50),
+                Name = "comboBox1",
+                Size = new Size(150, 50),
+                Font = new Font("Microsoft JhengHei", 12.25F, FontStyle.Bold, GraphicsUnit.Point, 136),
+                TabIndex = 2,
+                Visible = true,
+                Enabled = false
+            };
 
             this.Controls.Add(x);
             return x;
@@ -234,14 +244,16 @@ namespace WindowsFormsApplication5
         //commandNumber表示目前是row測試節的第幾個
         public TextBox addTextBox(int row, int col, int CommandNumber)
         {
-            TextBox x = new TextBox();
-            x.Location = new Point(50 + width * col, height * (row + 1) + CommandNumber * 50);
-            x.Name = "comboBox1";
-            x.Font= new Font("Microsoft JhengHei", 12.25F, FontStyle.Bold, GraphicsUnit.Point, 136);
-            x.Size = new Size(120, 50);
-            x.TabIndex = 2;
-            x.Enabled = false;
-            x.Visible = true;
+            TextBox x = new TextBox
+            {
+                Location = new Point(50 + width * col, height * (row + 1) + CommandNumber * 50),
+                Name = "comboBox1",
+                Font = new Font("Microsoft JhengHei", 12.25F, FontStyle.Bold, GraphicsUnit.Point, 136),
+                Size = new Size(120, 50),
+                TabIndex = 2,
+                Enabled = false,
+                Visible = true
+            };
             this.Controls.Add(x);
             return x;
         }
@@ -273,6 +285,7 @@ namespace WindowsFormsApplication5
                     //一行的最大數字
                     int oneLineTextNumber = 16;
                     
+                    /*
                     //換行控制
                     for (int j=0;j< ann[i].Length;j += oneLineTextNumber)
                     {
@@ -282,6 +295,7 @@ namespace WindowsFormsApplication5
                         else//小於的時候
                             this.lab[i].Text += ann[i].Substring(j, ann[i].Length - j);
                     }
+                    */
                    
                 }
                 else
@@ -793,7 +807,7 @@ namespace WindowsFormsApplication5
             }
             if (ok)
             {
-                AutoWriteCS writeCs = new AutoWriteCS(Testnumber, chapter, ann, result);
+                AutoWriteCS writeCs = new AutoWriteCS(Testnumber, chapter, ann, result, pin_name);
             }
             else
             {
