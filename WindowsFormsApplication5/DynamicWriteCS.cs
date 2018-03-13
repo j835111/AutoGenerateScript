@@ -387,6 +387,7 @@ namespace WindowsFormsApplication5
                         WriteLine("//開啟FORMCRLY_" + switchName + "的通道" + Final_OutputData[inputnumber, 7] + "  量測點B: " + Final_OutputData[inputnumber, 2]);
                         WriteLine("Switch.FORMCRLY_" + switchName + "(" + Final_OutputData[inputnumber, 7] + "," + on_off + ");");
                     }
+
                 }
                 else if (on_off == 0 && order == 2)//關
                 {
