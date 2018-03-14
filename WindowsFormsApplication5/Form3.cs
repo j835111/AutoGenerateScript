@@ -2,6 +2,9 @@
 using System.Data;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using System.IO;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace WindowsFormsApplication5
 {
@@ -32,6 +35,7 @@ namespace WindowsFormsApplication5
             chap_choise.SelectedIndex = 0;
             TestCatagory.Items.Add("靜態測試");
             TestCatagory.Items.Add("動態測試");
+            TestCatagory.Items.Add("資料庫產生");
         }
 
         
@@ -51,18 +55,24 @@ namespace WindowsFormsApplication5
             }
         }
         //連接
-        public void opene_excel(string path)
+        public static DataTable opene_excel(string path)
         {
             OleDbConnection conn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties='Excel 12.0 Xml;HDR=YES;IMEX=1'");
             DataSet ds = new DataSet();
             DataTable dt = new DataTable();
             conn.Open();
-            DataTable Table = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            DataTable table = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            conn.Close();
+            
+            return table;
+        }
+        private void AddItemForComboBox(DataTable table)
+        {
             chap_choise.Items.Clear();
             chap_choise.Items.Add("請選擇章節");
             //章選擇的控制項項目新增
             /*---------------------------------------------------------*/
-            foreach (DataRow row in Table.Rows)
+            foreach (DataRow row in table.Rows)
             {
                 string table_name = row["TABLE_NAME"].ToString();
                 if (table_name.IndexOf(chapter, StringComparison.OrdinalIgnoreCase) >= 0 && !(table_name.ToString()).Contains("Database"))
@@ -71,7 +81,6 @@ namespace WindowsFormsApplication5
                 }
             }
             /*---------------------------------------------------------*/
-            conn.Close();
             chap_choise.Visible = true;
             button2.Visible = true;
             TestCatagory.Visible = true;
@@ -104,35 +113,64 @@ namespace WindowsFormsApplication5
         //選擇靜態或動態
         private void TestCatagory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Catagory:1為靜態，2為動態
+            // Catagory:1為靜態，2為動態，3為產生board
             Catagory = TestCatagory.SelectedIndex;                       
         }
+
         private void button2_Click(object sender, EventArgs e)
         {
-            if(ChapterNunber == 0 )
-            {
+            if (!File.Exists("Config"))
+                MessageBox.Show("設定檔不存在!!請載入設定用EXCEL");
+            if (ChapterNunber == 0)
                 MessageBox.Show("未選擇章節");
-            }
-            else if(Catagory == 0)
-            {
+            else if (Catagory == 0)
                 MessageBox.Show("未選擇測試種類");
-            }
-            else if(ChapterNunber == 0 && Catagory == 0)
-            {
+            else if (ChapterNunber == 0 && Catagory == 0)
                 MessageBox.Show("兩者皆未選擇");
-            }
-            else if(Catagory == 1)
-            {
+            else if (Catagory == 1)
                 static_test(ChapterNunber);
-            }
-            else if(Catagory == 2)
-            {
+            else if (Catagory == 2)
                 dynamic_test(ChapterNunber);
-            }
-            
+            else if (Catagory == 3)
+            {
+                if (!File.Exists("Config"))
+                {
+                    MessageBox.Show("設定檔不存在!!");
+                    return;
+                }
+                if (!File.Exists("board.accdb"))
+                    File.Create("board.accdb");
+                DeserializeBinary();
+            }            
         }
+
+        private void setting_Click(object sender, EventArgs e)
+        {
+            /*-------------------------------------------------*/
+            OpenFileDialog filedialog = new OpenFileDialog();
+            filedialog.Title = "選取excel資料表";
+            filedialog.Filter = "excel測試表 | *.xlsx";
+            if (filedialog.ShowDialog() == DialogResult.OK)
+            {
+                path = filedialog.FileName;
+                //當成功選取excel,text=1
+                test = 1;
+                opene_excel(path);
+            }
+            /*--------------------------------------------------*/
+
+            SerializeBinary();
+            MessageBox.Show("Done");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DataColumnName data = DeserializeBinary();
+            MessageBox.Show("Done");
+        }
+
         //動態測試
-        public void dynamic_test(int ChapterNunber)
+        private void dynamic_test(int ChapterNunber)
         {
             string name = chap_choise.SelectedItem.ToString();
             int count=1;
@@ -201,12 +239,9 @@ namespace WindowsFormsApplication5
             Form4 Form4 = new Form4(ChapterNunber, InputNumber,inputData,TestNumber,outputData);
             Form4.Visible = true;
             this.Hide();
-
-
-
         }
 
-        public void static_test(int ChapterNunber)
+        private void static_test(int ChapterNunber)
         {
             string name = chap_choise.SelectedItem.ToString();
             try
@@ -287,7 +322,63 @@ namespace WindowsFormsApplication5
             }
 
         }
-        public static int StringToInt(String s)
+
+        private void SerializeBinary()
+        {
+            DataTable data = new DataTable();
+            List<string> chapter_test = new List<string>();
+            List<string> chapter = new List<string>();
+            List<string> component = new List<string>();
+            List<string> graph = new List<string>();
+
+            OleDbConnection exconn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties='Excel 12.0 Xml;HDR=YES;IMEX=1'");
+            DataTable table = opene_excel(path);
+            exconn.Open();
+
+            foreach (DataRow row in table.Rows)
+            {
+                OleDbCommand command = new OleDbCommand("Select * from [" + row["TABLE_NAME"].ToString() + "]", exconn);
+                OleDbDataReader reader = command.ExecuteReader();
+                data.Load(reader);
+                switch (row["TABLE_NAME"].ToString())
+                {
+                    case "chapter_test$":
+                        foreach (DataColumn col in data.Columns)
+                            chapter_test.Add(col.ToString());
+                        break;
+                    case "chapter$":
+                        foreach (DataColumn col in data.Columns)
+                            chapter.Add(col.ToString());
+                        break;
+                    case "component$":
+                        foreach (DataColumn col in data.Columns)
+                            component.Add(col.ToString());
+                        break;
+                    case "graph$":
+                        foreach (DataColumn col in data.Columns)
+                            graph.Add(col.ToString());
+                        break;
+                }
+            }
+            DataColumnName columname = new DataColumnName(chapter_test,chapter,component,graph);
+            FileStream fs = new FileStream("Config", FileMode.Create, FileAccess.Write);
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(fs, columname);
+            fs.Close();
+            fs.Dispose();
+            columname.Dispose();
+        }
+
+        private DataColumnName DeserializeBinary()
+        {
+            FileStream fileStream = new FileStream("Config", FileMode.Open);
+            BinaryFormatter formatter = new BinaryFormatter();
+            DataColumnName name = (DataColumnName)formatter.Deserialize(fileStream);
+            fileStream.Close();
+            fileStream.Dispose();
+            return name;
+        }
+        static int StringToInt(String s)
         {   
             try
             {

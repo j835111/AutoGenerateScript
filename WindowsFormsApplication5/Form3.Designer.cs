@@ -34,6 +34,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.TestCatagory = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.setting = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -102,12 +104,37 @@
             this.label1.Text = "TestCode Generator";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // setting
+            // 
+            this.setting.BackColor = System.Drawing.Color.White;
+            this.setting.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.setting.Font = new System.Drawing.Font("微軟正黑體", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.setting.Location = new System.Drawing.Point(571, 616);
+            this.setting.Name = "setting";
+            this.setting.Size = new System.Drawing.Size(87, 37);
+            this.setting.TabIndex = 8;
+            this.setting.Text = "設定";
+            this.setting.UseVisualStyleBackColor = false;
+            this.setting.Click += new System.EventHandler(this.setting_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(475, 630);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 9;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(682, 684);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.setting);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TestCatagory);
             this.Controls.Add(this.button2);
@@ -131,5 +158,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ComboBox TestCatagory;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button setting;
+        private System.Windows.Forms.Button button3;
     }
 }
