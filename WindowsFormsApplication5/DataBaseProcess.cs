@@ -33,8 +33,16 @@ namespace WindowsFormsApplication5
                     }
                     else
                     {
-
+                        CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Chapter);
+                        CommandQuery.InsertChapter(row["TABLE_NAME"].ToString().TrimEnd('$'), dataconent);
                     }
+                else if (row["TABLE_NAME"].ToString().Contains("component"))
+                    CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Component);
+                else
+                {
+                    CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Graph);
+
+                }
                     
 
             }
@@ -126,16 +134,17 @@ namespace WindowsFormsApplication5
             }
             x = 1;
         }
-        public static void InsertChapter(string chaptername, List<string> list)
+        public static void InsertChapter(string chaptername, DataTable data)
         {
-            int x = 0;
-            foreach (string i in list)
-            {
-                string text = "INSERT INTO " + chaptername + " VALUES('','" + chaptername.TrimStart("chapter".ToCharArray()) + "','" + i + "','" + x.ToString("000000") + "')";
-                DataBaseExecute(text);
-                x++;
-            }
-            x = 0;
+            foreach (DataRow row in data.Rows)
+                InsertContent(chaptername, data.Rows.Count, row);
+        }
+        public static void InsertGraph(string name)
+        {
+            string text1 = "INSERT INTO graph VALUES('','1'," + name + ".png,'','','參考資料')";
+            DataBaseExecute(text1);
+            string text2 = "INSERT INTO graph VALUES('','2'," + name + "_PreProbe.png,'','','參考資料')";
+            DataBaseExecute(text2);
         }
         public static List<string> DataTableToList(DataTable data)
         {
@@ -146,7 +155,7 @@ namespace WindowsFormsApplication5
             return list;
         }
 
-        public static void CreateChapterTest(string chaptername, DataTable data)
+        private static void CreateChapterTest(string chaptername, DataTable data)
         {
             CreateTable(chaptername, data.Columns);
             foreach (DataRow row in data.Rows)
@@ -156,6 +165,7 @@ namespace WindowsFormsApplication5
         {
             if (!acconn.State.ToString().Contains("Close"))
                 acconn.Close();
+            acconn.Dispose();
         }
     }
 }
