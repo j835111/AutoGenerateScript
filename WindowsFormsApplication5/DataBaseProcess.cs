@@ -2,7 +2,6 @@
 using System.Data;
 using System.Data.OleDb;
 using System.Text;
-using System.Windows.Forms;
 
 namespace WindowsFormsApplication5
 {
@@ -10,7 +9,7 @@ namespace WindowsFormsApplication5
     {
         DataColumnName data;
         string expath;
-        
+
         DataTable dataconent = new DataTable();
         public DataBaseProcess(DataColumnName name, string path)
         {
@@ -22,7 +21,7 @@ namespace WindowsFormsApplication5
 
             foreach (DataRow row in table.Rows)
             {
-                OleDbCommand command = new OleDbCommand("Select * from [" + row["TABLE_NAME"].ToString() + "]", exconn);
+                OleDbCommand command = new OleDbCommand("SELECT * FROM [" + row["TABLE_NAME"].ToString() + "]", exconn);
                 OleDbDataReader reader = command.ExecuteReader();
                 dataconent.Load(reader);
                 if (row["TABLE_NAME"].ToString().Contains("chapter"))
@@ -33,51 +32,37 @@ namespace WindowsFormsApplication5
                     }
                     else
                     {
-                        CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Chapter);
+                        CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), dataconent.Columns);
                         CommandQuery.InsertChapter(row["TABLE_NAME"].ToString().TrimEnd('$'), dataconent);
                     }
-                else if (row["TABLE_NAME"].ToString().Contains("component"))
-                    CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Component);
                 else
                 {
+                    CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Component);
                     CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Graph);
-
+                    //CommandQuery.InsertGraph();
                 }
-                    
-
+                dataconent.Clear();
+                dataconent.Columns.Clear(); 
             }
+            exconn.Close();
+            CommandQuery.CloseConnect();
         }
         private DataTable OpenExcel(string path)
         {
             DataTable columname = new DataTable();
-            OpenFileDialog filedialog = new OpenFileDialog();
-            filedialog.Title = "選取excel資料表";
-            filedialog.Filter = "excel測試表 | *.xlsx";
-            if (filedialog.ShowDialog() == DialogResult.OK)
-            {
-                path = filedialog.FileName;
-
-                columname =  Form3.opene_excel(path);
-            }
+            columname = Form3.opene_excel(path);
+            
             return columname;
         }
-        //private int TableNameToInt(string name)
-        //{
-        //    int x;
-        //    switch (name)
-        //    {
-        //        case "Chaper_test":
-        //            return 0;
-        //        case "Chapter"
-
-
-        //    }
-        //}
     }
     class CommandQuery
     {
         private static OleDbConnection acconn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=board.accdb");
 
+        /// <summary>
+        /// 執行資料庫指令
+        /// </summary>
+        /// <param name="commandtext">資料庫指令</param>
         private static void DataBaseExecute(StringBuilder commandtext)
         {
             OleDbCommand command = new OleDbCommand(commandtext.ToString(), acconn);
@@ -87,6 +72,11 @@ namespace WindowsFormsApplication5
             OleDbDataReader reader = command.ExecuteReader();
             reader.Read();
         }
+
+        /// <summary>
+        /// 執行資料庫指令
+        /// </summary>
+        /// <param name="commandtext"></param>
         private static void DataBaseExecute(string commandtext)
         {
             OleDbCommand command = new OleDbCommand(commandtext, acconn);
@@ -96,24 +86,43 @@ namespace WindowsFormsApplication5
             OleDbDataReader reader = command.ExecuteReader();
             reader.Read();
         }
-        private static void CreateTable(string chaptername, DataColumnCollection columname)
+
+        /// <summary>
+        /// 建立資料表
+        /// </summary>
+        /// <param name="chaptername">章節名稱</param>
+        /// <param name="columname">欄位名稱</param>
+        public static void CreateTable(string chaptername, DataColumnCollection columname)
         {
-            StringBuilder text = new StringBuilder("CREATE TABLE " + chaptername + "(" + columname[0] + " char(20)", 50);
+            StringBuilder text = new StringBuilder("CREATE TABLE " + chaptername + "(" + columname[0] + " char(50)", 50);
             for (int i = 1; i < columname.Count; i++)
-                text.Append(", " + columname[i] + " char(20)");
+                text.Append(", " + columname[i] + " char(50)");
 
             text.Append(");");
             DataBaseExecute(text);
         }
+
+        /// <summary>
+        /// 建立資料表
+        /// </summary>
+        /// <param name="chaptername">章節名稱</param>
+        /// <param name="column">欄位名稱</param>
         public static void CreateTable(string chaptername, List<string> column)
         {
-            StringBuilder text = new StringBuilder("CREATE TABLE " + chaptername + "(" + column[0] + " char(20)", 50);
+            StringBuilder text = new StringBuilder("CREATE TABLE " + chaptername + "(" + column[0] + " char(50)", 50);
             for (int i = 1; i < column.Count; i++)
-                text.Append(", " + column[i] + " char(20)");
+                text.Append(", " + column[i] + " char(50)");
 
             text.Append(");");
             DataBaseExecute(text);
         }
+
+        /// <summary>
+        /// 插入資料表內容
+        /// </summary>
+        /// <param name="chaptername">章節名稱</param>
+        /// <param name="columcount">總共有幾欄</param>
+        /// <param name="data">資料表內容</param>
         private static void InsertContent(string chaptername, int columcount, DataRow data)
         {
             StringBuilder text = new StringBuilder("INSERT INTO " + chaptername + " VALUES('" + data[0] + "'", 100);
@@ -123,22 +132,39 @@ namespace WindowsFormsApplication5
             text.Append(");");
             DataBaseExecute(text);
         }
+
+        /// <summary>
+        /// 插入Chapter_Test(專用)
+        /// </summary>
+        /// <param name="chaptername">章節名稱</param>
+        /// <param name="list">內容</param>
         public static void InsertChapterTest(string chaptername, List<string> list)
         {
             int x = 1;
             foreach (string i in list)
             {
-                string text = "INSERT INTO " + chaptername + " VALUES('','" + x + "','" + i + "','" + x.ToString("000000") + "')";
+                string text = "INSERT INTO " + chaptername + " VALUES('','" + x + "','" + i + "','','" + x.ToString("000000") + "')";
                 DataBaseExecute(text);
                 x++;
             }
             x = 1;
         }
+
+        /// <summary>
+        /// 插入章節
+        /// </summary>
+        /// <param name="chaptername">章節名稱</param>
+        /// <param name="data">內容</param>
         public static void InsertChapter(string chaptername, DataTable data)
         {
             foreach (DataRow row in data.Rows)
-                InsertContent(chaptername, data.Rows.Count, row);
+                InsertContent(chaptername, data.Columns.Count, row);
         }
+
+        /// <summary>
+        /// 插入Graph
+        /// </summary>
+        /// <param name="name">IC的名字</param>
         public static void InsertGraph(string name)
         {
             string text1 = "INSERT INTO graph VALUES('','1'," + name + ".png,'','','參考資料')";
@@ -146,6 +172,12 @@ namespace WindowsFormsApplication5
             string text2 = "INSERT INTO graph VALUES('','2'," + name + "_PreProbe.png,'','','參考資料')";
             DataBaseExecute(text2);
         }
+
+        /// <summary>
+        /// DataTableToList方法
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static List<string> DataTableToList(DataTable data)
         {
             List<string> list = new List<string>();
@@ -155,12 +187,21 @@ namespace WindowsFormsApplication5
             return list;
         }
 
+        /// <summary>
+        /// 插入Chapter_Test(專用)
+        /// </summary>
+        /// <param name="chaptername">章節名稱</param>
+        /// <param name="data">內容</param>
         private static void CreateChapterTest(string chaptername, DataTable data)
         {
             CreateTable(chaptername, data.Columns);
             foreach (DataRow row in data.Rows)
                 InsertContent(chaptername, data.Columns.Count, row);
         }
+
+        /// <summary>
+        /// 關閉資料庫連接
+        /// </summary>
         public static void CloseConnect()
         {
             if (!acconn.State.ToString().Contains("Close"))

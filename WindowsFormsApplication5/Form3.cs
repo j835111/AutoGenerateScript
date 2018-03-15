@@ -51,7 +51,7 @@ namespace WindowsFormsApplication5
                 path = filedialog.FileName;
                 //當成功選取excel,text=1
                 test = 1;
-                opene_excel(path);
+                AddItemForComboBox(opene_excel(path));
             }
         }
         //連接
@@ -139,8 +139,20 @@ namespace WindowsFormsApplication5
                     return;
                 }
                 if (!File.Exists("board.accdb"))
-                    File.Create("board.accdb");
-                DeserializeBinary();
+                {
+                    ADOX.Catalog cat = new ADOX.Catalog();
+                    cat.Create("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=board.accdb;");
+                    cat.ActiveConnection.Close();
+                }
+                else
+                {
+                    File.Delete("board.accdb");
+                    ADOX.Catalog cat = new ADOX.Catalog();
+                    cat.Create("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=board.accdb;");
+                    cat.ActiveConnection.Close();
+                }
+                DataBaseProcess baseProcess = new DataBaseProcess(DeserializeBinary(), path);
+                MessageBox.Show("Done");
             }            
         }
 
@@ -160,12 +172,6 @@ namespace WindowsFormsApplication5
             /*--------------------------------------------------*/
 
             SerializeBinary();
-            MessageBox.Show("Done");
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            DataColumnName data = DeserializeBinary();
             MessageBox.Show("Done");
         }
 
@@ -327,7 +333,7 @@ namespace WindowsFormsApplication5
         {
             DataTable data = new DataTable();
             List<string> chapter_test = new List<string>();
-            List<string> chapter = new List<string>();
+            //List<string> chapter = new List<string>();
             List<string> component = new List<string>();
             List<string> graph = new List<string>();
 
@@ -346,10 +352,10 @@ namespace WindowsFormsApplication5
                         foreach (DataColumn col in data.Columns)
                             chapter_test.Add(col.ToString());
                         break;
-                    case "chapter$":
-                        foreach (DataColumn col in data.Columns)
-                            chapter.Add(col.ToString());
-                        break;
+                    //case "chapter$":
+                    //    foreach (DataColumn col in data.Columns)
+                    //        chapter.Add(col.ToString());
+                    //    break;
                     case "component$":
                         foreach (DataColumn col in data.Columns)
                             component.Add(col.ToString());
@@ -360,7 +366,7 @@ namespace WindowsFormsApplication5
                         break;
                 }
             }
-            DataColumnName columname = new DataColumnName(chapter_test,chapter,component,graph);
+            DataColumnName columname = new DataColumnName(chapter_test, component, graph);
             FileStream fs = new FileStream("Config", FileMode.Create, FileAccess.Write);
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Serialize(fs, columname);

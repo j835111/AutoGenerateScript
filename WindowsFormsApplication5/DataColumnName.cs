@@ -20,7 +20,13 @@ namespace WindowsFormsApplication5
             Component = component;
             Graph = graph;
         }
-
+        public DataColumnName(List<string> chapter_test, List<string> component, List<string> graph)
+        {
+            Chapter_test = chapter_test;
+            //Chapter = chapter;
+            Component = component;
+            Graph = graph;
+        }
         public void Dispose()
         {
             Dispose(true);
