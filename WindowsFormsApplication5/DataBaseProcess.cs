@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.OleDb;
 using System.Text;
+using System.Windows.Forms;
 
 namespace WindowsFormsApplication5
 {
@@ -130,7 +131,14 @@ namespace WindowsFormsApplication5
                 text.Append(", '" + data[i] + "'");
 
             text.Append(");");
-            DataBaseExecute(text);
+            try
+            {
+                DataBaseExecute(text);
+            }
+            catch
+            {
+                MessageBox.Show("請將欄位中的graph改為\"graph\"!!");
+            }
         }
 
         /// <summary>
