@@ -365,6 +365,8 @@ namespace WindowsFormsApplication5
                             graph.Add(col.ToString());
                         break;
                 }
+                data.Clear();
+                data.Columns.Clear();
             }
             DataColumnName columname = new DataColumnName(chapter_test, component, graph);
             FileStream fs = new FileStream("Config", FileMode.Create, FileAccess.Write);

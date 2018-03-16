@@ -26,6 +26,7 @@ namespace WindowsFormsApplication5
                 OleDbDataReader reader = command.ExecuteReader();
                 dataconent.Load(reader);
                 if (row["TABLE_NAME"].ToString().Contains("chapter"))
+                {
                     if (row["TABLE_NAME"].ToString().Contains("test"))
                     {
                         CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Chapter_test);
@@ -36,15 +37,16 @@ namespace WindowsFormsApplication5
                         CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), dataconent.Columns);
                         CommandQuery.InsertChapter(row["TABLE_NAME"].ToString().TrimEnd('$'), dataconent);
                     }
-                else
-                {
-                    CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Component);
-                    CommandQuery.CreateTable(row["TABLE_NAME"].ToString().TrimEnd('$'), data.Graph);
-                    //CommandQuery.InsertGraph();
                 }
+
                 dataconent.Clear();
                 dataconent.Columns.Clear(); 
             }
+
+            CommandQuery.CreateTable("component", data.Component);
+            //CommandQuery.CreateTable("graph", data.Graph);
+            //CommandQuery.InsertGraph();
+
             exconn.Close();
             CommandQuery.CloseConnect();
         }
@@ -138,6 +140,8 @@ namespace WindowsFormsApplication5
             catch
             {
                 MessageBox.Show("請將欄位中的graph改為\"graph\"!!");
+                CloseConnect();
+                return;
             }
         }
 
