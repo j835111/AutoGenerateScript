@@ -201,7 +201,7 @@ namespace WindowsFormsApplication5
                         WriteLine("//關閉Switch" + SwitchName[result[test, 4, number]] + "的通道" + result[test, 5, number] + ", " + Pin_name[test, number]);
 
                     //寫入Switch.DIFFRLY程式碼
-                    WriteLine("Switch.FORMCRLY_" + SwitchName[result[test, 4, number]] + "(" + result[test, 5, number] + "," + result[test, 6, number] + "," + on_off + ");");
+                    WriteLine("Switch.FORMCRLY_" + SwitchName[result[test, 4, number]] + "(" + result[test, 5, number] + "," + on_off + ");");
                     break;
 
                 /*---------------------------------------------------------*/
